@@ -1,39 +1,33 @@
-var CACHE_NAME = 'static-v1';
+// service-worker.js
 
 self.addEventListener('install', function (event) {
   event.waitUntil(
-    caches.open(CACHE_NAME).then(function (cache) {
-      return cache.addAll([
-        '/',
-        '/index.php',
-        '/styles.css',
-        '/app.js',
-        '/manifest.js',
-        '/vendor.js',
-      ]);
-    })
-  )
-});
-
-self.addEventListener('activate', function activator(event) {
-  event.waitUntil(
-    caches.keys().then(function (keys) {
-      return Promise.all(keys
-        .filter(function (key) {
-          return key.indexOf(CACHE_NAME) !== 0;
-        })
-        .map(function (key) {
-          return caches.delete(key);
-        })
-      );
+    caches.open('nome-do-cache-v2').then(function (cache) {
+      '/',
+        'index.php',
+        'img/lista-de-compras.png'
+      // adicione os arquivos que deseja armazenar em cache
     })
   );
 });
 
 self.addEventListener('fetch', function (event) {
   event.respondWith(
-    caches.match(event.request).then(function (cachedResponse) {
-      return cachedResponse || fetch(event.request);
+    caches.match(event.request).then(function (response) {
+      return response || fetch(event.request);
     })
   );
 });
+
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', function () {
+    navigator.serviceWorker.register('/service-worker.js')
+      .then(function (registration) {
+        console.log('Service Worker registrado com sucesso:', registration);
+      })
+      .catch(function (error) {
+        console.log('Falha ao registrar o Service Worker:', error);
+      });
+  });
+}
+
