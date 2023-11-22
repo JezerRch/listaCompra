@@ -1,7 +1,7 @@
 <?php
 
 include("conexao.php");
-
+$emailCadastrado = '';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $nome = $_POST["nome"];
@@ -10,9 +10,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Validação de Dados
     if (empty($nome) || empty($email) || empty($_POST["senha"])) {
-        echo "Por favor, preencha todos os campos.";
+        echo '<script>alert("Preencha todos os campos!");</script>';
     } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        echo "Formato de e-mail inválido.";
+        $emailCadastrado = "Formato de e-mail inválido.";
     } else {
 
         // Verificar se o e-mail já está cadastrado
@@ -23,7 +23,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $verificar_result = $verificar_stmt->get_result();
 
         if ($verificar_result->num_rows > 0) {
-            echo "Este e-mail já está cadastrado. Por favor, use outro e-mail.";
+            $emailCadastrado = "Este e-mail já está cadastrado. Por favor, use outro e-mail.";
         } else {
             // Inserir o novo usuário
             $inserir_sql = "INSERT INTO usuarios (nome, email, senha) VALUES (?, ?, ?)";
@@ -41,7 +41,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $lista_padrao_stmt->bind_param("si", $nome_lista_padrao, $usuario_id);
 
                 if ($lista_padrao_stmt->execute()) {
-                    echo "Cadastro realizado com sucesso!";
+                    $cadastroRealiadoSucesso = "Cadastro realizado com sucesso!";
                     header("Location: index.php");
                     exit();
                 } else {
@@ -57,45 +57,36 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 }
 ?>
 
-
-<!DOCTYPE html>
-<html lang="pt-br">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cadastro</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap/dist/css/bootstrap.min.css">
-</head>
-
-<body>
-    <div class="container">
-        <h1>Cadastro</h1>
-        <form action="" method="POST">
-            <div class="form-group">
-                <label for="nome">Nome:</label>
-                <input type="text" class="form-control" name="nome" required>
-            </div>
-            <div class="form-group">
-                <label for="email">Email:</label>
-                <input type="email" class="form-control" name="email" required>
-            </div>
-            <div class="form-group">
-                <label for="senha">Senha:</label>
-                <input type="password" class="form-control" name="senha" required>
-            </div>
-
-            <div class="mt-5 row">
-                <div class="col-6">
-                    <button type="submit" class="btn btn-primary col-12">Cadastrar</button>
+<div class="container mt-5">
+    <div class="card">
+        <div class="card-header bg-primary text-white">
+            <h1 class="text-center">Cadastrar</h1>
+        </div>
+        <div class="card-body">
+            <form action="" method="POST">
+                <div class="form-group">
+                    <label for="nome">Nome:</label>
+                    <input type="text" class="form-control" name="nome" required>
                 </div>
-                <div class="col-6">
-                    <a class="btn btn-primary col-12" href="index.php">Voltar</a>
+                <div class="form-group">
+                    <label for="email">Email:</label>
+                    <input type="email" class="form-control" name="email" required>
+                    <?php echo '<small class="text-danger">' . $emailCadastrado . '</small>'; ?>
                 </div>
-            </div>
-        </form>
+                <div class="form-group">
+                    <label for="senha">Senha:</label>
+                    <input type="password" class="form-control" name="senha" required>
+                </div>
+
+                <div class="row">
+                    <div class="col-6">
+                        <button type="submit" class="btn btn-primary btn-block">Cadastrar</button>
+                    </div>
+                    <div class="col-6">
+                        <a class="btn btn-secondary btn-block" href="index.php">Voltar</a>
+                    </div>
+                </div>
+            </form>
+        </div>
     </div>
-
-</body>
-
-</html>
+</div>

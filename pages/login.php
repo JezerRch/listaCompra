@@ -1,5 +1,4 @@
 <?php
-
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = $_POST["email"];
     $senha = $_POST["senha"];
@@ -31,27 +30,35 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 }
 ?>
 
-<div class="container">
-    <h1>Login</h1>
-    <form action="" method="POST">
-        <div class="form-group">
-            <label for="email">Email:</label>
-            <input type="email" class="form-control" name="email" required>
+<div class="container mt-5">
+    <div class="card">
+        <div class="card-header">
+            <h1 class="text-center">Lista de Compra</h1>
         </div>
-        <div class="form-group">
-            <label for="senha">Senha:</label>
-            <input type="password" class="form-control" name="senha" required>
+        <div class="card-body">
+            <form action="" method="POST">
+                <div class="form-group">
+                    <label for="email">Email:</label>
+                    <input type="email" class="form-control" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="senha">Senha:</label>
+                    <input type="password" class="form-control" name="senha" required>
+                </div>
+                <div class="row">
+                    <div class="col-6">
+                        <button type="submit" class="btn btn-primary btn-block">Entrar</button>
+                    </div>
+                    <div class="col-6">
+                        <a class="btn btn-outline-primary btn-block" href="<?php echo INCLUDE_PATH; ?>register">Cadastrar</a>
+                    </div>
+                </div>
+            </form>
         </div>
-        <div class="mt-5 row">
-            <div class="col-6">
-                <button type="submit" class="btn btn-primary col-12">Entrar</button>
-            </div>
-            <div class="col-6">
-                <a class="btn btn-primary col-12" href="<?php echo INCLUDE_PATH; ?>register">Cadastrar</a>
-            </div>
-        </div>
-    </form>
+    </div>
 </div>
+
+
 
 
 <script>

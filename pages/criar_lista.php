@@ -2,19 +2,12 @@
 session_start();
 
 if (!isset($_SESSION["id"])) {
-    header("Location: index.php"); // Redireciona para a página de login se o usuário não estiver autenticado
+    header("Location: index"); // Redireciona para a página de login se o usuário não estiver autenticado
     exit();
 }
 
 // Verifique se o formulário foi enviado
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Conectar ao banco de dados
-    $conexao = new mysqli("localhost", "root", "", "lista_compras");
-
-    // Verificar a conexão
-    if ($conexao->connect_error) {
-        die("Erro de conexão: " . $conexao->connect_error);
-    }
 
     // Obter o nome da lista do formulário
     $nome_lista = $_POST["nome_lista"];
@@ -27,7 +20,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     if ($stmt->execute()) {
         echo "Lista de compras criada com sucesso!";
-        header("Location: dashboard.php"); // Redireciona para o dashboard
+        header("Location: dashboard"); // Redireciona para o dashboard
         exit();
     } else {
         echo "Erro ao criar a lista: " . $conexao->error;
